@@ -1,11 +1,11 @@
-import { Body, Controller, Post, UseFilters } from "@nestjs/common";
+import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
 import { AuthService } from './auth.service';
 import { AuthDto } from "./dto";
-import { CustomExceptionFilter } from "../error-handler/http-exception.filter";
+
 //import { HttpExceptionFilter } from "../error-handler/http-exception.filter";
 
 @Controller('auth')
-@UseFilters(new CustomExceptionFilter())
+//@UseFilters(new CustomExceptionFilter())
 export class AuthController {
   constructor(private authService: AuthService) {}
   
@@ -15,9 +15,9 @@ export class AuthController {
 
     return this.authService.signup(dto);
   }
-
+  @HttpCode(HttpStatus.OK)
   @Post('signin')
-  signin() {
-    return this.authService.signin();
+  signin(@Body() dto: AuthDto) {
+    return this.authService.signin(dto);
   }
 }
